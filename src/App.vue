@@ -1,30 +1,79 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <nav class="navbar">
+      <div class="nav-left">
+        <button @click="toggleMenu" class="hamburger">&#9776;</button>
+        <div v-if="menuOpen" class="dropdown-menu">
+          <router-link to="/" @click="closeMenu">Dashboard</router-link>
+          <router-link to="/products" @click="closeMenu">Productos</router-link>
+        </div>
+      </div>
+    </nav>
+
+    <router-view :searchQuery="searchQuery" :selectedCategory="selectedCategory" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script setup>
+import { ref } from 'vue';
+
+const menuOpen = ref(false);
+const searchQuery = ref('');
+const selectedCategory = ref('');
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
+};
+
+const closeMenu = () => {
+  menuOpen.value = false;
+};
+</script>
+
+<style>
+/* Navbar */
+.navbar {
+  background: #1a237e;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+/* Botón hamburguesa */
+.hamburger {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+/* Estilo del menú desplegable */
+.dropdown-menu {
+  position: absolute;
+  top: 50px; /* Ajusta según la altura de tu navbar */
+  left: 10px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
 }
+
+.dropdown-menu a {
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu a:hover {
+  background: #ddd;
+}
+
+
 </style>
