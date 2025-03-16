@@ -7,6 +7,9 @@
 # Listado de Productos
 ![Listado de Productos](products.png)
 
+# Modal
+![Modal](modal.png)
+
 # Entrada de Producto
 ![Entrada de Productos](entry.png)
 

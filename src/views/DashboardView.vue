@@ -5,7 +5,7 @@
     <div class="charts-container">
       <!-- Gráfica de pastel -->
       <div class="chart-card pie-chart">
-        <h2>Productos Mas Vendidos</h2>
+        <h2>Productos Más Vendidos</h2>
         <canvas ref="pieChart"></canvas>
       </div>
 
@@ -23,6 +23,7 @@ import { ref, onMounted } from "vue";
 import {
   Chart,
   ArcElement,
+  PieController,
   BarElement,
   BarController,
   CategoryScale,
@@ -32,9 +33,9 @@ import {
   Legend,
 } from "chart.js";
 
-// Registrar los componentes que usaremos de Chart.js
 Chart.register(
   ArcElement,
+  PieController,
   BarElement,
   BarController,
   CategoryScale,
@@ -46,20 +47,9 @@ Chart.register(
 
 const pieChart = ref(null);
 const barChart = ref(null);
+const topSellingData = ref(null);
 
-// Datos falsos para la gráfica de pastel (Top Selling Products)
-const topSellingData = {
-  labels: ["Mens Casual Premium Slim Fit T-Shirts", "SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s", "White Gold Plated Princess", "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops", "Solid Gold Petite Micropave"],
-  datasets: [
-    {
-      label: "Sales",
-      data: [30, 50, 40, 20, 10], // Cantidades simuladas
-      backgroundColor: ["#6495ED", "#8B008B", "#9932CC", "#483D8B", "#1a237e"],
-    },
-  ],
-};
-
-// Datos falsos para la gráfica de barras (Pagos)
+// Datos falsos para "Payment Sent & Received"
 const paymentData = {
   labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
   datasets: [
@@ -76,29 +66,57 @@ const paymentData = {
   ],
 };
 
-onMounted(() => {
-  createPieChart();
-  createBarChart();
-});
+// 🔹 Obtener datos de la API y actualizar la gráfica de pastel
+async function fetchTopSellingProducts() {
+  try {
+    const response = await fetch("https://fakestoreapi.com/products");
+    const data = await response.json();
 
+    // Ordenar productos por rating
+    const sortedProducts = data
+      .sort((a, b) => b.rating.rate - a.rating.rate)
+      .slice(0, 5);
+
+    // Estructurar datos para el gráfico
+    topSellingData.value = {
+      labels: sortedProducts.map((product) => product.title),
+      datasets: [
+        {
+          label: "Rating",
+          data: sortedProducts.map((product) => product.rating.rate),
+          backgroundColor: ["#6495ED", "#8B008B", "#9932CC", "#483D8B", "#1a237e"],
+        },
+      ],
+    };
+
+    createPieChart();
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+  }
+}
+
+
+// 🔹 Función para renderizar la gráfica de pastel
 function createPieChart() {
-  // Creamos la gráfica de pastel
+  if (!topSellingData.value) return; // Evita errores si los datos aún no están listos
+
   new Chart(pieChart.value, {
     type: "pie",
-    data: topSellingData,
+    data: topSellingData.value,
     options: {
       responsive: true,
       plugins: {
         legend: {
           position: "bottom",
+          
         },
       },
     },
   });
 }
 
+// 🔹 Función para renderizar la gráfica de barras
 function createBarChart() {
-  // Creamos la gráfica de barras
   new Chart(barChart.value, {
     type: "bar",
     data: paymentData,
@@ -117,6 +135,12 @@ function createBarChart() {
     },
   });
 }
+
+// 🔹 Ejecutamos las funciones cuando el componente se monta
+onMounted(() => {
+  fetchTopSellingProducts();
+  createBarChart();
+});
 </script>
 
 <style scoped>
@@ -137,7 +161,7 @@ function createBarChart() {
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  margin-left:70px;
+  margin-left: 70px;
   text-align: center;
 }
 
@@ -155,4 +179,3 @@ function createBarChart() {
   max-width: 800px;
 }
 </style>
-

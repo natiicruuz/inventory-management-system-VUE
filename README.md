@@ -15,14 +15,19 @@ Este proyecto es una aplicación web construida con Vue 3 que permite gestionar 
 ├── 📂 src
 │   ├── 📂 assets       
 │   ├── 📂 components   
+│   │   ├── 📄 ProductEntry.vue  
+│   │   ├── 📄 ProductOutput.vue  
+│   │   ├── 📄 ProductModal.vue  
 │   ├── 📂 views        
-│   ├── 📄router       
-│   ├── 📄App.vue        
-│   ├── 📄main.js         
-│   ├── 📄style.css        
+│   │   ├── 📄 DashboardView.vue  
+│   │   ├── 📄 ProductsView.vue  
+│   ├── 📄 router       
+│   ├── 📄 App.vue        
+│   ├── 📄 main.js         
+│   ├── 📄 style.css        
 ├── 📄 package.json     
 ├── 📄 README.md        
-└── 📄 vite.config.js         
+└── 📄 vite.config.js                
 ```
 
 ## ❓ Preguntas proyecto
