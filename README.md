@@ -1,4 +1,5 @@
-# Sistema de Inventario Reactivo
+# Sistema de Inventario Reactivo en VUE
+## Entregable 1
 Proyecto 1 Programación web 2, 2025
 
 Este proyecto es una aplicación web construida con Vue 3 que permite gestionar el inventario de una tienda online de manera reactiva. Se enfoca en la actualización dinámica del stock sin necesidad de computed(), utilizando reactive() y watch().
