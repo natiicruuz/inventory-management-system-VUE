@@ -1,6 +1,5 @@
 # Sistema de Inventario Reactivo en VUE y Backend con Flask + GraphQL 
 ## Entregable 2
-
 Proyecto 1 Programación web 2, 2025
 
 Este proyecto es una aplicación web construida con Vue 3 que permite gestionar el inventario de una tienda online de manera reactiva. Se enfoca en la actualización dinámica del stock sin necesidad de computed(), utilizando reactive() y watch().
@@ -12,10 +11,29 @@ Este proyecto es una aplicación web construida con Vue 3 que permite gestionar 
 - Reactividad sin computed(): Los productos cambian su estado de disponibilidad automáticamente.
 
 ## 📂 Estructura
-
+```
+📦 inventory-management-system-VUE
+├── 📂 src
+│   ├── 📂 assets       
+│   ├── 📂 components   
+│   │   ├── 📄 ProductEntry.vue  
+│   │   ├── 📄 ProductOutput.vue  
+│   │   ├── 📄 ProductModal.vue  
+│   ├── 📂 views        
+│   │   ├── 📄 DashboardView.vue  
+│   │   ├── 📄 ProductsView.vue  
+│   ├── 📄 router       
+│   ├── 📄 App.vue        
+│   ├── 📄 main.js         
+│   ├── 📄 style.css        
+├── 📄 package.json     
+├── 📄 README.md        
+└── 📄 vite.config.js                
+```
 
 ## ❓ Preguntas proyecto
 
 
 ## 🔨 Instalación y Uso
+
 
