@@ -13,6 +13,33 @@ Este proyecto es una aplicación web construida con Vue 3 que permite gestionar 
 
 ## 📂 Estructura
 
+```
+    📦 FrontEnd
+    ├── 📂 src
+    │   ├── 📂 assets       
+    │   ├── 📂 components   
+    │   │   ├── 📄 ProductEntry.vue  
+    │   │   ├── 📄 ProductOutput.vue  
+    │   │   ├── 📄 ProductModal.vue  
+    │   ├── 📂 views        
+    │   │   ├── 📄 DashboardView.vue  
+    │   │   ├── 📄 ProductsView.vue  
+    │   ├── 📄 router       
+    │   ├── 📄 App.vue        
+    │   ├── 📄 main.js         
+    │   ├── 📄 style.css        
+    ├── 📄 package.json     
+    ├── 📄 README.md        
+    └── 📄 vite.config.js   
+    📦 BackEnd
+    ├── 📂 venv 
+    ├── 📄 app.py 
+    ├── 📄 data.py  
+    └── 📄 schema.py 
+               
+```
+
+
 
 ## ❓ Preguntas proyecto
 
