@@ -6,7 +6,12 @@
     <button @click="showOutput = true">Salida de Producto</button>
 
     <div class="product-grid">
-      <div v-for="product in inventory" :key="product.id" class="product-card" @click="fetchProductDetails(product.id)">
+      <div
+        v-for="product in inventory"
+        :key="product.id"
+        class="product-card"
+        @click="fetchProductDetails(product.id)"
+      >
         <img :src="product.imagen" alt="Imagen del producto" class="product-image" />
         <h3>{{ product.nombre }}</h3>
         <p class="price">${{ product.precio }}</p>
@@ -23,19 +28,23 @@
 </template>
 
 <script setup>
-import { reactive, ref, watch } from "vue";
-import { useQuery, useLazyQuery } from "@vue/apollo-composable";
+import { ref, reactive, watch } from "vue";
+import { useQuery, useApolloClient } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
 import ProductEntry from "../components/ProductEntry.vue";
 import ProductOutput from "../components/ProductOutput.vue";
 import ProductModal from "../components/ProductModal.vue";
 
+// Estado reactivo
 const inventory = reactive([]);
 const showEntry = ref(false);
 const showOutput = ref(false);
 const showModal = ref(false);
 const selectedProduct = ref({});
+
+// Apollo client
+const apolloClient = useApolloClient();
 
 // --- GraphQL Queries ---
 const GET_PRODUCTS = gql`
@@ -68,35 +77,41 @@ const GET_PRODUCT_BY_ID = gql`
   }
 `;
 
-// --- Apollo useQuery para traer todos los productos ---
+// --- Obtener todos los productos al cargar ---
 const { result, loading, error } = useQuery(GET_PRODUCTS);
 
-// --- Apollo useLazyQuery para traer producto por ID ---
-const { load: fetchProductById } = useLazyQuery(GET_PRODUCT_BY_ID, { id: 0 });
-
-// --- Rellenar inventory reactivamente cuando result esté listo ---
 watch(result, (newResult) => {
   if (newResult?.products) {
-    inventory.length = 0; // Limpia el array reactivo
+    inventory.length = 0;
     newResult.products.forEach((product) => {
       inventory.push({
         ...product,
-        disponible: product.stock > 0, // Calcula disponible por si acaso
+        disponible: product.stock > 0,
       });
     });
   }
 });
 
-// Obtener detalles de un producto por ID (para modal)
-const fetchProductDetails = async (productId) => {
-  const { onResult } = fetchProductById({ id: productId });
-  onResult((queryResult) => {
-    selectedProduct.value = queryResult.data.product;
-    showModal.value = true;
-  });
+// --- Obtener producto por ID al hacer clic ---
+const fetchProductDetails = async (id) => {
+  try {
+    const { data } = await apolloClient.client.query({
+      query: GET_PRODUCT_BY_ID,
+      variables: { id: Number(id) },
+    });
+
+    if (data?.product) {
+      selectedProduct.value = data.product;
+      showModal.value = true;
+    } else {
+      console.error("Producto no encontrado");
+    }
+  } catch (error) {
+    console.error("Error al consultar el producto:", error);
+  }
 };
 
-// Watch para stock
+// --- Watch para actualizar disponibilidad automáticamente ---
 watch(
   inventory,
   (newInventory) => {
@@ -107,7 +122,7 @@ watch(
   { deep: true }
 );
 
-// Actualizar stock (entrada/salida)
+// --- Actualizar stock ---
 const updateStock = ({ product, quantity }) => {
   const item = inventory.find((p) => p.id === product.id);
   if (item) {
@@ -124,9 +139,7 @@ const updateStock = ({ product, quantity }) => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  margin-top: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin: 20px 50px 0 50px;
 }
 .product-card {
   border: 1px solid #ddd;
