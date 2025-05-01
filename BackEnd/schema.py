@@ -1,6 +1,8 @@
 import strawberry
 from typing import List, Optional
-from data import products
+
+# Carga del inventario simulado desde data.py
+from data import inventory
 
 @strawberry.type
 class Product:
@@ -9,26 +11,37 @@ class Product:
     precio: float
     stock: int
     disponible: bool
+    imagen: str
+    descripcion: Optional[str] = None
+    rating: Optional[float] = None
 
 @strawberry.type
 class Query:
+    
     @strawberry.field
-    def all_products(self) -> List[Product]:
-        return [Product(**p) for p in products]
+    def products(self) -> List[Product]:
+        """Devuelve todos los productos"""
+        return inventory
 
     @strawberry.field
-    def product_by_id(self, id: int) -> Optional[Product]:
-        return next((Product(**p) for p in products if p["id"] == id), None)
+    def product(self, id: int) -> Optional[Product]:
+        """Devuelve un producto por ID"""
+        for product in inventory:
+            if product.id == id:
+                return product
+        return None
 
 @strawberry.type
 class Mutation:
+
     @strawberry.mutation
     def update_stock(self, id: int, quantity: int) -> Optional[Product]:
-        for p in products:
-            if p["id"] == id:
-                p["stock"] = quantity
-                p["disponible"] = quantity > 0
-                return Product(**p)
+        """Suma o resta stock de un producto por ID"""
+        for product in inventory:
+            if product.id == id:
+                product.stock += quantity
+                product.disponible = product.stock > 0
+                return product
         return None
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
