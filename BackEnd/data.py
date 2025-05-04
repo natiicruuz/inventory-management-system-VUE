@@ -14,14 +14,13 @@ class Product:
     descripcion: str
     rating: float
 
-# Simulamos el inventario
 inventory: List[Product] = [
     Product(
         id=1,
         nombre="Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
         precio=109.95,
         stock=randint(0, 100),
-        disponible=True,  # Vamos a actualizar luego si stock > 0
+        disponible=True,  
         imagen="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
         descripcion="Your perfect pack for everyday use and walks in the forest.",
         rating=3.9,
@@ -218,7 +217,7 @@ inventory: List[Product] = [
     )
 ]
 
-# Ajustamos disponible después
+
 for p in inventory:
     p.disponible = p.stock > 0
 

@@ -4,8 +4,7 @@
       <div class="nav-left">
         <button @click="toggleMenu" class="hamburger">&#9776;</button>
         <div v-if="menuOpen" class="dropdown-menu">
-          <router-link to="/" @click="closeMenu">Dashboard</router-link>
-          <router-link to="/products" @click="closeMenu">Productos</router-link>
+          <router-link to="/" @click="closeMenu">Productos</router-link>
         </div>
       </div>
     </nav>
@@ -31,7 +30,7 @@ const closeMenu = () => {
 </script>
 
 <style>
-/* Navbar */
+
 .navbar {
   background: #1a237e;
   padding: 5px;
@@ -41,7 +40,6 @@ const closeMenu = () => {
   color: white;
 }
 
-/* Botón hamburguesa */
 .hamburger {
   background: none;
   border: none;
@@ -50,10 +48,9 @@ const closeMenu = () => {
   cursor: pointer;
 }
 
-/* Estilo del menú desplegable */
 .dropdown-menu {
   position: absolute;
-  top: 50px; /* Ajusta según la altura de tu navbar */
+  top: 50px; 
   left: 10px;
   background: white;
   border-radius: 5px;
@@ -73,6 +70,7 @@ const closeMenu = () => {
 
 .dropdown-menu a:hover {
   background: #ddd;
+  border-radius: 5px;
 }
 
 

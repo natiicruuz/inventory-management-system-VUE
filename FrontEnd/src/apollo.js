@@ -8,7 +8,6 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-// Función para inyectarlo en Vue
 export function provideApollo(app) {
   app.provide(DefaultApolloClient, apolloClient);
 }

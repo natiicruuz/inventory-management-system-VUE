@@ -36,17 +36,15 @@ import ProductEntry from "../components/ProductEntry.vue";
 import ProductOutput from "../components/ProductOutput.vue";
 import ProductModal from "../components/ProductModal.vue";
 
-// Estado reactivo
 const inventory = reactive([]);
 const showEntry = ref(false);
 const showOutput = ref(false);
 const showModal = ref(false);
 const selectedProduct = ref({});
 
-// Apollo client
 const apolloClient = useApolloClient();
 
-// --- GraphQL Queries ---
+
 const GET_PRODUCTS = gql`
   query {
     products {
@@ -77,7 +75,17 @@ const GET_PRODUCT_BY_ID = gql`
   }
 `;
 
-// --- Obtener todos los productos al cargar ---
+const UPDATE_STOCK = gql`
+  mutation UpdateStock($id: Int!, $quantity: Int!) {
+    updateStock(id: $id, quantity: $quantity) {
+      id
+      stock
+      disponible
+    }
+  }
+`;
+
+
 const { result, loading, error } = useQuery(GET_PRODUCTS);
 
 watch(result, (newResult) => {
@@ -92,7 +100,6 @@ watch(result, (newResult) => {
   }
 });
 
-// --- Obtener producto por ID al hacer clic ---
 const fetchProductDetails = async (id) => {
   try {
     const { data } = await apolloClient.client.query({
@@ -111,7 +118,6 @@ const fetchProductDetails = async (id) => {
   }
 };
 
-// --- Watch para actualizar disponibilidad automáticamente ---
 watch(
   inventory,
   (newInventory) => {
@@ -122,16 +128,30 @@ watch(
   { deep: true }
 );
 
-// --- Actualizar stock ---
-const updateStock = ({ product, quantity }) => {
-  const item = inventory.find((p) => p.id === product.id);
-  if (item) {
-    item.stock += quantity;
-    item.disponible = item.stock > 0;
+const updateStock = async ({ product, quantity }) => {
+  try {
+    const { data } = await apolloClient.client.mutate({
+      mutation: UPDATE_STOCK,
+      variables: {
+        id: product.id,
+        quantity: quantity,
+      },
+    });
+
+    const updated = data?.updateStock;
+    if (updated) {
+      const item = inventory.find((p) => p.id === updated.id);
+      if (item) {
+        item.stock = updated.stock;
+        item.disponible = updated.disponible;
+      }
+    }
+  } catch (error) {
+    console.error("Error al actualizar stock:", error);
   }
 };
-</script>
 
+</script>
 
 
 <style scoped>

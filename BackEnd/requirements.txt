@@ -1,0 +1,4 @@
+Flask==3.1.0
+flask-cors==5.0.1
+strawberry-graphql==0.266.0
+graphql-core==3.2.6

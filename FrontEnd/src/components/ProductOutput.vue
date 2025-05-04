@@ -52,7 +52,6 @@ const close = () => {
 </script>
 
 <style scoped>
-/* FONDO OSCURO QUE OCUPA TODA LA PANTALLA */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -65,7 +64,6 @@ const close = () => {
   align-items: center;
 }
 
-/* MODAL CENTRADO Y CON ESPACIADO MEJORADO */
 .modal-content {
   background: white;
   padding: 25px;
@@ -76,13 +74,11 @@ const close = () => {
   align-items: center;
 }
 
-/* ESPACIADO ENTRE LOS ELEMENTOS */
 .form-group {
   width: 100%;
   margin-bottom: 15px;
 }
 
-/* INPUT Y SELECT DEL MISMO TAMAÑO */
 select, .small-input {
   width: calc(100% - 16px);
   padding: 6px;
@@ -90,7 +86,6 @@ select, .small-input {
   border-radius: 4px;
 }
 
-/* SEPARACIÓN ENTRE INPUTS Y EL FINAL DEL MODAL */
 .modal-buttons {
   display: flex;
   justify-content: space-between;
