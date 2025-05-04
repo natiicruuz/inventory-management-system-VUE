@@ -100,6 +100,6 @@ python app.py
 El backend estará disponible en http://localhost:5000/graphql.
 
 
-# Respuestas a las preguntas que se deben responder para el entregable
+# Preguntas proyecto y aprendizaje obtenido:
 [❓ Preguntas proyecto](Respuestas.md)
 

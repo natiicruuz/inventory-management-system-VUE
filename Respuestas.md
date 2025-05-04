@@ -34,19 +34,7 @@ Implementamos esa lógica directamente en el resolver del backend. En la mutaci�
 |-----------------------|---------------------------------------------------------------------|
 | **Vue 3**             | Framework frontend progresivo con soporte para composición.         |
 | **@vue/apollo-composable** | Integración de Vue con GraphQL para hacer queries reactivas. |
-| **Vite**              | Herramienta de compilacion moderno rápido para entornos Vue.                          |
-
-
-## Requisitos funcionales cumplidos
-
-| Requisito                                                                                   | Estado |
-|---------------------------------------------------------------------------------------------|--------|
-| Base de datos en memoria con productos en lista de Python                                   | ✅     |
-| Consulta GraphQL para obtener todos los productos                                           | ✅     |
-| Consulta GraphQL para obtener un producto por ID                                            | ✅     |
-| Mutación GraphQL para actualizar el stock de un producto                                    | ✅     |
-| Lógica backend para cambiar el campo `disponible` según el stock (sin depender del frontend) | ✅     |
-| Integración Vue → GraphQL → Flask funcionando y reactiva                                    | ✅     |
+| **Vite**              | Herramienta de compilacion moderno rápido para entornos Vue.       |
 
 
 ## Desafíos técnicos y cómo se solucionaron
@@ -69,9 +57,10 @@ Implementamos esa lógica directamente en el resolver del backend. En la mutaci�
 
 
 ### 2. Lógica de negocio duplicada
-**Problema:**  
-Originalmente la lógica para actualizar `disponible` se ejecutaba tanto en el frontend como en el backend, causando inconsistencias.
+
+**Problema:**  Inicialmente, la lógica para actualizar el campo `disponible` (basado en el `stock`) se implementaba tanto en el frontend como en el backend, lo que abría la puerta a inconsistencias o duplicación de lógica.
 
 **Solución:**  
-Se centralizó la lógica en el backend dentro de la mutación `update_stock`. El campo `disponible` se actualiza automáticamente cada vez que se modifica el stock, eliminando la necesidad de esta lógica en Vue.
+- Se centralizó toda la lógica en el backend, dentro de la mutación `update_stock`. Ahora el campo `disponible` se calcula automáticamente cada vez que se actualiza el stock.  
+El frontend simplemente emite eventos que invocan esta mutación, evitando lógica redundante en Vue y asegurando coherencia sin importar desde dónde se actualice el stock.
 
