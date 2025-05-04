@@ -99,6 +99,47 @@ python app.py
 ```
 El backend estará disponible en http://localhost:5000/graphql.
 
+### Ejemplos de Queries y Mutaciones
+1.  Obtener todos los productos:
+    ```
+    query {
+        products {
+            id
+            nombre
+            precio
+            stock
+            disponible
+            imagen
+            descripcion
+            rating
+        }
+    }
+    ```
+2. Obtener un producto por ID:
+    ```
+    query {
+        product(id: 1) {
+            id
+            nombre
+            precio
+            stock
+            disponible
+            descripcion
+        }
+    }
+    ```
+
+3. Actualizar el stock de un producto:
+    ```
+    mutation {
+        updateStock(id: 1, quantity: 3) {
+            id
+            nombre
+            stock
+            disponible
+        }
+    }
+    ```
 
 # Preguntas proyecto y aprendizaje obtenido:
 [❓ Preguntas proyecto](Respuestas.md)
